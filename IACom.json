@@ -1,0 +1,111 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "from datetime import datetime\nimport json\n\ndef obter_saudacao(hora_atual):\n    if 0 <= hora_atual < 6:\n        return \"Boa Madrugada\"\n    elif 6 <= hora_atual < 12:\n        return \"Bom Dia\"\n    elif 12 <= hora_atual < 18:\n        return \"Boa Tarde\"\n    else:\n        return \"Boa Noite\"\n\ndef enviar_resposta(resposta):\n    # Simula a resposta JSON\n    payload = {\"mensagem\": resposta}\n    print(json.dumps(payload, indent=4))  # Imprime o JSON formatado para teste\n\ndef processar_mensagem():\n    hora_atual = datetime.now().hour\n    saudacao = obter_saudacao(hora_atual)\n    enviar_resposta(saudacao)\n\n# Chame a função para processar a mensagem\nprocessar_mensagem()"
+      },
+      "id": "d71ac330-cdb5-4723-b5ac-d297a1cb3b96",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1680,
+        460
+      ],
+      "alwaysOutputData": true,
+      "executeOnce": true
+    },
+    {
+      "parameters": {},
+      "id": "45603f7f-ceef-4d92-9c90-04dbe4ccb0db",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.manualChatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        1460,
+        460
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "includeInputFields": true,
+          "timezone": "="
+        }
+      },
+      "id": "c0e6beca-bdcc-4104-b293-3304743b876c",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1900,
+        460
+      ]
+    }
+  ],
+  "pinData": {
+    "Code": [
+      {
+        "json": {
+          "hora": "05:00",
+          "mensagem": "Boa Madrugada"
+        }
+      },
+      {
+        "json": {
+          "hora": "09:00",
+          "mensagem": "Bom Dia"
+        }
+      },
+      {
+        "json": {
+          "hora": "15:00",
+          "mensagem": "Boa Tarde"
+        }
+      },
+      {
+        "json": {
+          "hora": "20:00",
+          "mensagem": "Boa Noite"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7cb6044d-8341-4efa-bfe9-0b16696541f4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "feb7fb609cc800c9c366557f11a399c14d0bcb2a2a5cce1cc95b7afea62be1bc"
+  },
+  "id": "OLNZuQmI0c3od72q",
+  "tags": []
+}
